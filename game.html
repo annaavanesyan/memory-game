@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>anna's game</title>
+    <link rel="stylesheet" type="text/css" href="game.css">
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+    <script>
+        var tiles_time;
+        var end;
+        var current, current_background;
+
+        document.body = document.createElement("body");
+        var containerDiv = document.createElement("div");
+        containerDiv.className = "container";
+        containerDiv.style.cssText='background:#ccc;border: 1px solid #999; width: 600px; height: 540px; padding: 24px; margin: 0px auto';
+
+
+        var imgArray = ['black.png','blue.png','bluegrey.png','coral.png', 'darkgreen.png','darkpurple.png',
+            'grey.png', 'lightgreen.png','lightorange.png','lightpurple.png', 'navy.png','orange.png',
+            'pink.png', 'pirouz.png','priyatniblue.png', 'purple.png','red.png','yellow.png',
+            'black.png','blue.png','bluegrey.png','coral.png', 'darkgreen.png','darkpurple.png',
+            'grey.png', 'lightgreen.png','lightorange.png','lightpurple.png', 'navy.png','orange.png',
+            'pink.png', 'pirouz.png','priyatniblue.png', 'purple.png','red.png','yellow.png'];
+
+
+        var body = document.querySelector("body");
+        body.append(containerDiv);
+
+        for (var row = 1; row <= 6; row++) {
+
+            var rowDiv = document.createElement('div');
+            rowDiv.className = 'row';
+            containerDiv.append(rowDiv);
+
+            for (var column = 1; column <= 6; column++) {
+
+                var colDiv = document.createElement('div');
+                colDiv.className = 'col-sm-1';
+
+                colDiv.style.cssText = "background: url('colors/logo.png') no-repeat;border: solid 1px #000; width: 71px; height: 71px; padding: 20px; margin: 5px; font-size: 20px; cursor: pointer; text-align: center";
+                rowDiv.append(colDiv);
+
+                colDiv.onclick = function () {
+                    ++tiles_time;
+                    this.style.backgroundImage = getRandomImage(imgArray, 'colors/');
+
+                    if (tiles_time == 1){
+                        current = this;
+                        current_background = this.style.backgroundImage;
+                    }
+
+                    if (tiles_time == 2) {
+                        tiles_time = 0;
+                        if ((this.style.backgroundImage == current_background)&&(current!=this)) {
+                            this.style.backgroundImage = 'none';
+                            k.style.backgroundImage = 'none';
+                            end++;
+                            if(end==18){
+                                console.log('You win!');
+                            }
+                        } else{
+                            current.style.background = 'colors/logo.png';
+                            this.style.backgroundImage = 'colors/logo.png';
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        function getRandomImage(imgAr, path) {
+            path = path || 'images/'; // default path here
+            var num = Math.floor( Math.random() * imgAr.length );
+            var img = imgAr[ num ];
+            var imgStr =  'url(' + path + img + ')';
+            return imgStr;
+        }
+
+        Array.prototype.memory_tile_shuffle = function (){
+            var i = this.length, j, temp;
+            while(--i > 0){
+                j= Math.floor(Math.random() * (i+1));
+                temp = this[j];
+                this[j]= this[i];
+                this[i] = temp;
+            }
+        }
+
+    </script>
+</html>
