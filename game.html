@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>anna's chudo game</title>
+    <link rel="stylesheet" type="text/css" href="game.css">
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+
+    <script>
+
+        //declaring variables
+
+        var numbering_for_id = 0;
+        var numbering_for_images = 0;
+        var board_size = 6;
+        var tiles_time;
+        var finished_tiles_count;
+        var current;
+        var current_background;
+        var current_image;
+
+        document.body = document.createElement("body");
+        var container_div = document.createElement("div");
+        container_div.className = "container";
+        container_div.style.cssText='background: #e6e6e6; border: 1px solid #999; width: 506px; height: 540px; padding: 24px; margin: 20px auto';
+
+        var body = document.querySelector("body");
+        body.append(container_div);
+
+        var images_array = ['colors/black.png','colors/blue.png','colors/bluegrey.png','colors/coral.png', 'colors/darkgreen.png','colors/darkpurple.png',
+            'colors/grey.png', 'colors/lightgreen.png','colors/lightorange.png','colors/lightpurple.png', 'colors/navy.png','colors/orange.png',
+            'colors/pink.png', 'colors/pirouz.png','colors/priyatniblue.png', 'colors/purple.png','colors/red.png','colors/yellow.png'];
+
+
+        //functions
+
+        function check(){
+            console.log('mtav');
+
+            ++tiles_time;
+
+            var done = document.createElement("IMG");
+            done.setAttribute("src", "colors/done.png");
+            done.style.cssText ="width: 71px; height: 71px";
+            done.setAttribute("alt", 'done');
+
+            if (tiles_time === 1){
+
+                current = this;
+                current_background = this.style.backgroundImage;
+                current_image = document.getElementById('image' + this.id);
+                current_image.style.visibility = "hidden";
+            }
+
+            if (tiles_time === 2){
+
+                tiles_time = 0;
+                current.image = document.getElementById('image' + this.id);
+                current.image.style.visibility = 'hidden';
+
+                if ((this.style.backgroundImage === current_background)&&(current!==this)){
+
+                    this.appendChild(done);
+                    current.appendChild(done);
+                    finished_tiles_count++;
+
+                    if(finished_tiles_count === 18){
+                        console.log('You win!');
+                    }
+                }
+
+                else{
+                    current_image.style.visibility = "visible";
+                    this.image.style.visibility = "visibile";
+                }
+
+            }
+        }               //voncvorte ha
+
+        function creating_container(){
+
+            for (var row = 1; row <= board_size; row++) {
+
+                var row_div = document.createElement('div');
+                row_div.className = 'row';
+                container_div.append(row_div);
+
+                for (var column = 1; column <= board_size; column++) {
+
+                    var col_div = document.createElement('div');
+                    col_div.className = 'col-sm-1';
+                    col_div.id = numbering_for_id;
+                    numbering_for_id++;
+
+                    row_div.append(col_div);
+                    col_div.onclick = check();
+                }
+            }
+        }   //onclick working without click
+
+        function shuffle_images(){
+            for(var n=0; n <=images_array.length; n++){
+
+                var num1 = Math.floor(Math.random() * images_array.length);
+                var num2 = Math.floor(Math.random() * images_array.length);
+
+                var temp = images_array[num1];
+                images_array[num1] = images_array[num2];
+                images_array[num2] = temp;
+
+            }
+        }       //done
+
+        function set_images(){
+
+            shuffle_images();
+            numbering_for_id = 0;
+
+            for(var a=1; a<= board_size*board_size/2; a++){
+
+                var cell = document.getElementById(numbering_for_id);
+
+                var cover_image = document.createElement("IMG");
+                cover_image.setAttribute("src", "colors/logo.png");
+                cover_image.style.cssText ="width: 71px; height: 71px";
+                cover_image.setAttribute("alt", 'logo');
+                cover_image.id = 'image' + numbering_for_id;
+
+                cell.append(cover_image);
+                cell.style.cssText = "background: url('"+images_array[numbering_for_images]+"') no-repeat;border: solid 1px #000; width: 71px; height: 71px; margin: 5px;padding: 0px; cursor: pointer";
+                numbering_for_images++;
+                numbering_for_id++;
+            }
+
+            shuffle_images();
+            numbering_for_images = 0;
+
+            for(var b=1; b<= board_size*board_size/2; b++){
+
+                var cell1 = document.getElementById(numbering_for_id);
+
+                var cover_image = document.createElement("IMG");
+                cover_image.setAttribute("src", "colors/logo.png");
+                cover_image.style.cssText ="width: 71px; height: 71px";
+                cover_image.setAttribute("alt", 'logo');
+                cover_image.id = 'image' + numbering_for_id;
+
+                cell1.append(cover_image);
+                cell1.style.cssText = "background: url('"+images_array[numbering_for_images]+"') no-repeat;border: solid 1px #000; width: 71px; height: 71px; margin: 5px;padding: 0px; cursor: pointer";
+
+                numbering_for_images++;
+                numbering_for_id++;
+
+            }
+        }           //idnery 0-35  imageIDs = image0-35
+
+
+        //calling functions
+
+        creating_container();
+        set_images();
+
+    </script>
+</html>
